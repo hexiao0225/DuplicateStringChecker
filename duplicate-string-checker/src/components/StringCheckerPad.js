@@ -35,30 +35,26 @@ export default class StringCheckerPad extends Component {
     super();
     this.state = { value: "", warning: "", occurrence: {} };
   }
-  refreshResultDisplay = (results) => {
-    axios
-      .get("http://localhost:8000/api/todos/")
-      .then((res) => res.json())
-      .then((res) => this.setState({ occurrence: res.data }))
-      .catch((err) => console.log(err));
-  };
 
   handleChange = (e) => {
     this.setState({ value: e.target.value });
   };
 
-  handleSubmit = (e) => {
-    if (this.validateString(this.state.value)) {
-      const data = this.state.value.json();
-      axios
-        .post("http://localhost:8000/api/todos/", data)
-        .then((results) => this.refreshResultDisplay());
-
-      //   this.setState({
-      //     occurrence: mockResults,
-      //   });
-      e.preventDefault();
+  handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!this.validateString(this.state.value)) {
+      return;
     }
+    const response = await fetch("/stringCheckAPI", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ post: this.state.value }),
+    });
+    const body = await response.text();
+
+    this.setState({ results: body });
   };
 
   clearInput = () => {
@@ -88,6 +84,7 @@ export default class StringCheckerPad extends Component {
   render() {
     return (
       <div className="string-checker-pad">
+        {this.state.results}
         <p className="warning">{this.state.warning}</p>
         <form className="string-checker-form" onSubmit={this.handleSubmit}>
           <input
