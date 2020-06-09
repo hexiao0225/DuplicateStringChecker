@@ -2,17 +2,17 @@ var express = require("express");
 var router = express.Router();
 
 function stringToOccurrence(input) {
-  return input.split("").reduce((acc, char) => {
+  const countMap = input.split("").reduce((acc, char) => {
     acc[char] = (acc[char] || 0) + 1;
     return acc;
   }, {});
+  return Object.keys(countMap);
 }
 
-router.post("/", (req, res) => {
-  const body = req.body.post;
-  const results = stringToOccurrence(body);
-  //TODO: calculation here
-  return res.send(results);
+router.get("/:string", (request, response) => {
+  var input = request.params.string;
+  const results = stringToOccurrence(input);
+  return response.send(results);
 });
 
 module.exports = router;

@@ -7,25 +7,18 @@ import {
   DUPLICATES_LABEL,
 } from "../constants/texts";
 // import ClearInputIcon from "./ClearInputIcon";
-import axios from "axios";
 
-//TODO: get this information from api
-// const mockResults = {
-//   A: 2,
-//   B: 3,
-// };
-
-const mockResults = {
-  A: 2,
-  B: 3,
-  C: 7,
-  D: 20,
-  E: 1334,
-  1: 78,
-  7: 5,
-};
+function stringToOccurrence(input) {
+  return input.split("").reduce((acc, char) => {
+    acc[char] = (acc[char] || 0) + 1;
+    return acc;
+  }, {});
+}
 
 function isAlphaNumeric(string) {
+  if (!string) {
+    return false;
+  }
   const letterNumberRegex = /^[0-9a-zA-Z]+$/;
   return string.match(letterNumberRegex);
 }
@@ -33,7 +26,12 @@ function isAlphaNumeric(string) {
 export default class StringCheckerPad extends Component {
   constructor() {
     super();
-    this.state = { value: "", warning: "", occurrence: {} };
+    this.state = {
+      value: "",
+      warning: "",
+      singleOccurence: "",
+      occurrence: {},
+    };
   }
 
   handleChange = (e) => {
@@ -41,20 +39,16 @@ export default class StringCheckerPad extends Component {
   };
 
   handleSubmit = async (e) => {
+    const inputString = this.state.value;
     e.preventDefault();
-    if (!this.validateString(this.state.value)) {
+    if (!this.isInputValid(inputString)) {
       return;
     }
-    const response = await fetch("/stringCheckAPI", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ post: this.state.value }),
-    });
+    this.setState({ singleOccurence: stringToOccurrence(inputString) });
+    const response = await fetch(`/stringCheckAPI/${inputString}`);
     const body = await response.text();
 
-    this.setState({ results: body });
+    this.setState({ occurrence: JSON.parse(body) });
   };
 
   clearInput = () => {
@@ -66,7 +60,7 @@ export default class StringCheckerPad extends Component {
     });
   };
 
-  validateString = (string) => {
+  isInputValid = (string) => {
     if (!string) {
       this.setState({
         warning: EMPTY_STRING_WARNING,
@@ -84,7 +78,6 @@ export default class StringCheckerPad extends Component {
   render() {
     return (
       <div className="string-checker-pad">
-        {this.state.results}
         <p className="warning">{this.state.warning}</p>
         <form className="string-checker-form" onSubmit={this.handleSubmit}>
           <input
@@ -95,6 +88,7 @@ export default class StringCheckerPad extends Component {
             onChange={this.handleChange}
           />
           <input
+            disabled={!isAlphaNumeric(this.state.value)}
             className="string-checker-button"
             type="submit"
             value="Check"
@@ -103,6 +97,7 @@ export default class StringCheckerPad extends Component {
         {/* <ClearInputIcon onClick={this.clearInput} /> */}
 
         <div>{DUPLICATES_LABEL}</div>
+        <ResultDisplay results={this.state.singleOccurence} />
         <ResultDisplay results={this.state.occurrence} />
       </div>
     );
