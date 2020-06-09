@@ -9,3 +9,5 @@ export const CHECK_BUTTON_LABEL = "Check";
 
 export const INPUT_AREA_PLACEHOLDER =
   "Type or paste a string here (alphabets and numbers only)";
+
+export const MAXIMUM_CHARACTER = 1800;

@@ -9,10 +9,18 @@ import {
 // import ClearInputIcon from "./ClearInputIcon";
 
 function stringToOccurrence(input) {
-  return input.split("").reduce((acc, char) => {
+  let result = {};
+  const record = input.split("").reduce((acc, char) => {
     acc[char] = (acc[char] || 0) + 1;
     return acc;
   }, {});
+
+  for (let key in record) {
+    if (record[key] > 1) {
+      result[key] = record[key];
+    }
+  }
+  return result;
 }
 
 function isAlphaNumeric(string) {
