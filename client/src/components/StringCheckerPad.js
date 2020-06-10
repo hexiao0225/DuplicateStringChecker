@@ -5,7 +5,6 @@ import {
   INPUT_AREA_PLACEHOLDER,
   BACKEND_RESULT_LABEL,
   TITLE,
-  DUPLICATES_LABEL,
   TOP_BOTTOM_LABEL,
   FRONTEND_RESULT_LABEL,
   LOADING,
@@ -112,11 +111,9 @@ export default class StringCheckerPad extends Component {
           <CharCountText currentStringLength={value.length} />
         )}
 
-        <h2>{DUPLICATES_LABEL}</h2>
-        <p>{TOP_BOTTOM_LABEL}</p>
-
         {frontendResults ? (
           <div>
+            <p>{TOP_BOTTOM_LABEL}</p>
             <h3>{FRONTEND_RESULT_LABEL}</h3>
             <RegularResultDisplay results={frontendResults} />
           </div>
