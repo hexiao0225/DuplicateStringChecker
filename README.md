@@ -1,2 +1,3 @@
 # DuplicateStringChecker
+
 A mini “DuplicateStringChecker”

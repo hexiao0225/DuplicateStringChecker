@@ -2,7 +2,7 @@ import React from "react";
 import LetterNumberBox from "./LetterNumberBox";
 import { NO_DUPLICATES_FOUND } from "../constants/constants";
 
-const FrontendResultDisplay = ({ results }) => {
+const RegularResultDisplay = ({ results } = {}) => {
   const patternList = Object.keys(results);
   return (
     <div className="result-display">
@@ -14,4 +14,4 @@ const FrontendResultDisplay = ({ results }) => {
   );
 };
 
-export default FrontendResultDisplay;
+export default RegularResultDisplay;

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import FrontendResultDisplay from "./FrontendResultDisplay";
+import RegularResultDisplay from "./RegularResultDisplay";
 import ResultCanvas from "./ResultCanvas";
 import {
   INPUT_AREA_PLACEHOLDER,
@@ -10,6 +10,7 @@ import {
   FRONTEND_RESULT_LABEL,
   LOADING,
   ERROR_MSG,
+  USE_CANVAS_THRESHOLD,
 } from "../constants/constants";
 
 import {
@@ -117,14 +118,19 @@ export default class StringCheckerPad extends Component {
         {frontendResults ? (
           <div>
             <h3>{FRONTEND_RESULT_LABEL}</h3>
-            <FrontendResultDisplay results={frontendResults} />
+            <RegularResultDisplay results={frontendResults} />
           </div>
         ) : null}
 
         {backendResults ? (
           <div>
             <h3>{BACKEND_RESULT_LABEL}</h3>
-            <ResultCanvas results={backendResults} />
+            {/* To avoid lag, canvas is used to render large datasets */}
+            {Object.keys(backendResults).length > USE_CANVAS_THRESHOLD ? (
+              <ResultCanvas results={backendResults} />
+            ) : (
+              <RegularResultDisplay results={backendResults} />
+            )}
           </div>
         ) : null}
 

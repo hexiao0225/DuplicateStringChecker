@@ -1,7 +1,19 @@
-export const MAXIMUM_CHARACTER = 1000;
+// Numbers
+export const MAXIMUM_CHARACTER = 2000;
 
-export const MAXIMUM_CHARACTER_WARNING =
-  "You have reached the limit of 1000 characters. Your input may be truncated.";
+export const USE_CANVAS_THRESHOLD = 40;
+
+//Canvas Numbers
+export const LINE_HEIGHT = 20;
+export const CANVAS_WIDTH = 900;
+export const CANVAS_RIGHT_PADDING = 30;
+export const CANVAS_LEFT_PADDING = 10;
+export const CANVAS_MIN_HEIGHT = 400;
+export const BLOCK_HEIGHT = 50;
+export const TEXT_PADDING = 20;
+
+// Contents
+export const MAXIMUM_CHARACTER_WARNING = `You have reached the limit of ${MAXIMUM_CHARACTER} characters. Your input may be truncated.`;
 
 export const TITLE = "Duplicate String Checker";
 
@@ -47,8 +59,10 @@ export const TEST_CASES = [
   "bbbaabbbaa",
   "123alsdfhl asdflh!@#sdf",
   "LoremipsumdolortinvoluptatevelitessecillumdoloreeufugiatnullapariaturExcepteursintoccaecatcupidatatnonproidentsuntinculpatmollitanimidestlaborum",
+  "WeneedtodevelopaDuplicateStringCheckercomponentwhereausercantypeanarbitrarystringonlyalphanumericcharactersareallowedintoaninputfieldThecomponentshoulddisplaytheduplicatescontainedintheinputstringandtheircountiehowmanytimeseachduplicateappearsintheinputstring",
 ];
 
 export const LOADING = "Loading...";
 
-export const ERROR_MSG = "Something went wrong";
+export const ERROR_MSG =
+  "Something went wrong. Please check your network connection.";
