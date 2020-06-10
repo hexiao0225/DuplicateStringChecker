@@ -8,7 +8,7 @@ import {
   BACKEND_TECHNOLOGY,
   TEST_CASES,
   TEST_STRINGS_LABEL,
-} from "../constants/texts";
+} from "../constants/constants";
 
 const InfoSidebar = () => (
   <div className="info-sidebar">

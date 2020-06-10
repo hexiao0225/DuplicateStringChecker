@@ -1,53 +1,33 @@
 import React, { Component } from "react";
-import ResultDisplay from "./ResultDisplay";
+import FrontendResultDisplay from "./FrontendResultDisplay";
 import ResultCanvas from "./ResultCanvas";
 import {
   INPUT_AREA_PLACEHOLDER,
-  DUPLICATES_LABEL,
-  NON_ALPHANUMERIC_FORMAT_MESSAGE,
-  MAXIMUM_CHARACTER,
   BACKEND_RESULT_LABEL,
-  FRONTEND_RESULT_LABEL,
   TITLE,
+  DUPLICATES_LABEL,
   TOP_BOTTOM_LABEL,
-} from "../constants/texts";
+  FRONTEND_RESULT_LABEL,
+  LOADING,
+  ERROR_MSG,
+} from "../constants/constants";
 
-function stringToOccurrence(input) {
-  let result = {};
-  const record = input.split("").reduce((acc, char) => {
-    acc[char] = (acc[char] || 0) + 1;
-    return acc;
-  }, {});
-
-  for (let key in record) {
-    if (record[key] > 1) {
-      result[key] = record[key];
-    }
-  }
-  return result;
-}
-
-function isAlphaNumeric(string) {
-  const letterNumberRegex = /^[0-9a-zA-Z]+$/;
-  return string.match(letterNumberRegex);
-}
-
-function removeNonAlphanumericChar(string) {
-  return string.replace(/[^A-Za-z0-9]/g, "");
-}
-
-function sanitizeInput(string) {
-  return string.slice(0, MAXIMUM_CHARACTER).replace(/[^A-Za-z0-9]/g, "");
-}
+import {
+  stringToOccurrence,
+  isAlphaNumeric,
+  sanitizeString,
+  isStringValid,
+} from "../utils/helpers";
+import WarningText from "./WarningText";
+import CharCountText from "./CharCountText";
 
 export default class StringCheckerPad extends Component {
   constructor() {
     super();
     this.state = {
       value: "",
-      warning: "",
-      singleOccurence: {},
-      occurrence: {},
+      frontendResults: null,
+      backendResults: null,
       isWarningDismissed: false,
       isLoading: false,
       error: false,
@@ -59,20 +39,23 @@ export default class StringCheckerPad extends Component {
   };
 
   handleSubmit = (e) => {
-    const inputString = sanitizeInput(this.state.value);
+    const string = sanitizeString(this.state.value);
     e.preventDefault();
-    if (!inputString || !isAlphaNumeric(inputString)) {
+    if (!isStringValid(string)) {
       return;
     }
-    this.setState({ singleOccurence: stringToOccurrence(inputString) });
-    this.setState({ isLoading: true });
-    fetch(`/stringCheckAPI/${inputString}`)
+    this.setState({
+      frontendResults: stringToOccurrence(string),
+      isLoading: true,
+    });
+
+    fetch(`/stringCheckAPI/${string}`)
       .then((response) => {
         return response.json();
       })
       .then((json) => {
         this.setState({
-          occurrence: json,
+          backendResults: json,
           isLoading: false,
         });
       })
@@ -85,12 +68,13 @@ export default class StringCheckerPad extends Component {
   render() {
     const {
       value,
-      singleOccurence,
-      occurrence,
+      frontendResults,
+      backendResults,
       isLoading,
       error,
       isWarningDismissed,
     } = this.state;
+
     return (
       <div className="string-checker-pad">
         <h1>{TITLE}</h1>
@@ -98,13 +82,13 @@ export default class StringCheckerPad extends Component {
           <input
             className="string-checker-input"
             autoFocus
-            type="search"
+            type="search" // "search" enables clear button at the end
             placeholder={INPUT_AREA_PLACEHOLDER}
             value={value}
             onChange={this.handleChange}
           />
           <button
-            disabled={!isAlphaNumeric(value)}
+            disabled={!isStringValid(value)}
             className="string-checker-button"
             type="submit"
           >
@@ -113,49 +97,39 @@ export default class StringCheckerPad extends Component {
         </form>
 
         {value && !isAlphaNumeric(value) && !isWarningDismissed ? (
-          <p className="warning">
-            {NON_ALPHANUMERIC_FORMAT_MESSAGE} {"   "}
-            <a
-              onClick={() =>
-                this.setState({
-                  value: removeNonAlphanumericChar(value),
-                })
-              }
-            >
-              Yes
-            </a>
-            {"   "}
-            <a
-              onClick={() => {
-                this.setState({ isWarningDismissed: true });
-              }}
-            >
-              No
-            </a>
-          </p>
+          <WarningText
+            dismissWarning={() => {
+              this.setState({ isWarningDismissed: true });
+            }}
+            sanitizeString={() => {
+              this.setState({
+                value: sanitizeString(value),
+              });
+            }}
+          />
         ) : (
-          <p>
-            {Math.min(value.length, MAXIMUM_CHARACTER)}/{MAXIMUM_CHARACTER}
-          </p>
+          <CharCountText currentStringLength={value.length} />
         )}
 
-        {singleOccurence ? (
+        <h2>{DUPLICATES_LABEL}</h2>
+        <p>{TOP_BOTTOM_LABEL}</p>
+
+        {frontendResults ? (
           <div>
-            <h2>{DUPLICATES_LABEL}</h2>
-            <p>{TOP_BOTTOM_LABEL}</p>
             <h3>{FRONTEND_RESULT_LABEL}</h3>
-            <ResultDisplay results={singleOccurence} />
+            <FrontendResultDisplay results={frontendResults} />
           </div>
         ) : null}
-        {isLoading && !occurrence.length ? (
-          <p>Loading...</p>
-        ) : (
+
+        {backendResults ? (
           <div>
             <h3>{BACKEND_RESULT_LABEL}</h3>
-            <ResultCanvas results={occurrence} />
+            <ResultCanvas results={backendResults} />
           </div>
-        )}
-        {error && <p>Something went wrong</p>}
+        ) : null}
+
+        {isLoading ? <p>{LOADING}</p> : null}
+        {error && <p>{ERROR_MSG}</p>}
       </div>
     );
   }

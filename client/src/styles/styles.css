@@ -101,6 +101,9 @@ button:focus {
   align-items: center;
   margin: 10px;
 }
+.letter-number-box:hover {
+  background: #fafafa;
+}
 
 .letter-number-box-character {
   font-weight: 600;

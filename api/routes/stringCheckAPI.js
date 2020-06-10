@@ -1,7 +1,7 @@
-var express = require("express");
-var router = express.Router();
+let express = require("express");
+let router = express.Router();
 
-function findDuplicates(string) {
+const findDuplicates = (string) => {
   let record = {};
   let result = {};
   for (let i = 0; i < string.length; i++) {
@@ -20,7 +20,7 @@ function findDuplicates(string) {
     }
   }
   return result;
-}
+};
 
 router.get("/:string", (request, response) => {
   let input = request.params.string;

@@ -5,13 +5,13 @@ const CANVAS_CONTENT_WIDTH = 700;
 
 function estimateCanvasHeightByTextsSize(len) {
   // Estimate 10 words per row
-  // Each row takes up 40px
+  // Each row takes up 60px
   // Chrome max canvas height is 16,384 and IE is 8,192. We take 8000 here.
-  return Math.min(Math.floor(len / 10) * 40 + 300, 8000);
+  return Math.min(Math.floor(len / 10) * 60 + 300, 8000);
 }
 const ResultCanvas = ({ results }) => {
   const canvasRef = useRef(null);
-  let texts = Object.keys(results);
+  let texts = Object.keys(results).sort();
 
   let draw = (ctx) => {
     ctx.canvas.width = CANVAS_WIDTH;
@@ -21,23 +21,25 @@ const ResultCanvas = ({ results }) => {
     );
     ctx.font = "12px 300 Roboto";
     let accumulatedXPos = 0;
-    let xPos = 0;
+    let xPos = 8;
     let yPos = 0;
     let numOfLine = 0;
     for (let i = 0; i < texts.length; i++) {
       const text = texts[i];
       var metrics = ctx.measureText(text);
-      const w = metrics.width;
-      accumulatedXPos += w + 24;
-      if (xPos > CANVAS_CONTENT_WIDTH || xPos + w + 24 > CANVAS_CONTENT_WIDTH) {
-        xPos = 0;
-      }
-      xPos += w + 24;
+      const w = metrics.width + 10;
+      accumulatedXPos += w + 18;
       numOfLine = Math.floor(accumulatedXPos / CANVAS_CONTENT_WIDTH) + 1;
-      yPos = numOfLine * 35;
-      ctx.strokeRect(xPos - 8, yPos - 8, w + 16, 28);
-      ctx.fillText(text, xPos, yPos);
-      ctx.fillText(results[text], xPos, yPos + LINE_HEIGHT);
+      yPos = numOfLine * 50;
+      if (xPos + w + 18 > CANVAS_CONTENT_WIDTH) {
+        xPos = 1.5;
+      } else {
+        xPos += w + 18;
+      }
+
+      ctx.strokeRect(xPos - 1.5, yPos - 12, w + 3, 30);
+      ctx.fillText(text, xPos + 6, yPos);
+      ctx.fillText(results[text], xPos + 6, yPos + LINE_HEIGHT);
     }
   };
 

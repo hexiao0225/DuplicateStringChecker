@@ -1,7 +1,11 @@
 export const MAXIMUM_CHARACTER = 1000;
 
+export const MAXIMUM_CHARACTER_WARNING =
+  "You have reached the limit of 1000 characters. Your input may be truncated.";
+
 export const TITLE = "Duplicate String Checker";
 
+export const CHAR_COUNT_LABEL = "Count:";
 export const DESCRIPTION_LABEL = "Description";
 
 export const PROJECT_DESCRIPTION =
@@ -44,3 +48,7 @@ export const TEST_CASES = [
   "123alsdfhl asdflh!@#sdf",
   "LoremipsumdolortinvoluptatevelitessecillumdoloreeufugiatnullapariaturExcepteursintoccaecatcupidatatnonproidentsuntinculpatmollitanimidestlaborum",
 ];
+
+export const LOADING = "Loading...";
+
+export const ERROR_MSG = "Something went wrong";
