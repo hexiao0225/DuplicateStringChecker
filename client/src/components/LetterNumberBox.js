@@ -1,20 +1,10 @@
 import React from "react";
 
 const LetterNumberBox = ({ letter, number, isShrinkNeeded }) => (
-  <div
-    className={
-      isShrinkNeeded ? "letter-number-box-shrinked" : "letter-number-box"
-    }
-  >
-    <div>
-      {/* <label>Character</label> */}
-      {letter}
-    </div>
-    <div>
-      {/* <label>Occurrence</label> */}
-      {number}
-    </div>
-  </div>
+  <li className="letter-number-box">
+    <div className="letter-number-box-character">{letter}</div>
+    <div className="letter-number-box-occurrence">{number}</div>
+  </li>
 );
 
 export default LetterNumberBox;

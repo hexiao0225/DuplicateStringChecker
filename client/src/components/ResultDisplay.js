@@ -7,15 +7,14 @@ const isShrinkedBoxNeeded = (results) => {
 
 const ResultDisplay = ({ results }) => (
   <div className="result-display">
-    {console.log(results) ||
-      Object.keys(results).map((result, index) => (
-        <LetterNumberBox
-          key={index}
-          letter={result}
-          number={results[result]} //TODO: cleaner way
-          isShrinkNeeded={isShrinkedBoxNeeded(results)}
-        />
-      ))}
+    {Object.keys(results).map((char, index) => (
+      <LetterNumberBox
+        key={index}
+        letter={char}
+        number={results[char]}
+        isShrinkNeeded={isShrinkedBoxNeeded(results)}
+      />
+    ))}
   </div>
 );
 

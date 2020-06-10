@@ -1,12 +1,16 @@
 import React, { Component } from "react";
 import ResultDisplay from "./ResultDisplay";
 import {
-  EMPTY_STRING_WARNING,
-  NON_ALPHA_NUMERIC_STRING_WARNING,
   INPUT_AREA_PLACEHOLDER,
   DUPLICATES_LABEL,
+  NON_ALPHANUMERIC_FORMAT_MESSAGE,
+  MAXIMUM_CHARACTER,
+  BACKEND_LABEL,
+  FRONTEND_LABEL,
+  TITLE,
+  PROJECT_DESCRIPTION,
+  TOP_BOTTOM_LABEL,
 } from "../constants/texts";
-// import ClearInputIcon from "./ClearInputIcon";
 
 function stringToOccurrence(input) {
   let result = {};
@@ -24,11 +28,16 @@ function stringToOccurrence(input) {
 }
 
 function isAlphaNumeric(string) {
-  if (!string) {
-    return false;
-  }
   const letterNumberRegex = /^[0-9a-zA-Z]+$/;
   return string.match(letterNumberRegex);
+}
+
+function removeNonAlphanumericChar(string) {
+  return string.replace(/[^A-Za-z0-9]/g, "");
+}
+
+function sanitizeInput(string) {
+  return string.slice(0, MAXIMUM_CHARACTER).replace(/[^A-Za-z0-9]/g, "");
 }
 
 export default class StringCheckerPad extends Component {
@@ -37,8 +46,11 @@ export default class StringCheckerPad extends Component {
     this.state = {
       value: "",
       warning: "",
-      singleOccurence: "",
+      singleOccurence: {},
       occurrence: {},
+      dismissWarning: false,
+      isLoading: false,
+      error: false,
     };
   }
 
@@ -46,67 +58,96 @@ export default class StringCheckerPad extends Component {
     this.setState({ value: e.target.value });
   };
 
-  handleSubmit = async (e) => {
-    const inputString = this.state.value;
+  handleSubmit = (e) => {
+    const inputString = sanitizeInput(this.state.value);
     e.preventDefault();
-    if (!this.isInputValid(inputString)) {
+    if (!inputString || !isAlphaNumeric(inputString)) {
       return;
     }
     this.setState({ singleOccurence: stringToOccurrence(inputString) });
-    const response = await fetch(`/stringCheckAPI/${inputString}`);
-    const body = await response.text();
-
-    this.setState({ occurrence: JSON.parse(body) });
-  };
-
-  clearInput = () => {
-    //TODO: Make this working
-    console.log("clearclear");
-    this.setState({
-      value: "",
-      occurrence: "",
-    });
-  };
-
-  isInputValid = (string) => {
-    if (!string) {
-      this.setState({
-        warning: EMPTY_STRING_WARNING,
+    this.setState({ isLoading: true });
+    fetch(`/stringCheckAPI/${inputString}`)
+      .then((response) => {
+        return response.json();
+      })
+      .then((json) => {
+        this.setState({
+          occurrence: json,
+          isLoading: false,
+        });
+      })
+      .catch((error) => {
+        this.setState({ error: true, isLoading: false });
+        console.log(error);
       });
-      return false;
-    } else if (!isAlphaNumeric(string)) {
-      this.setState({
-        warning: NON_ALPHA_NUMERIC_STRING_WARNING,
-      });
-      return false;
-    }
-    return true;
   };
 
   render() {
+    const {
+      value,
+      singleOccurence,
+      occurrence,
+      isLoading,
+      error,
+      dismissWarning,
+    } = this.state;
     return (
       <div className="string-checker-pad">
-        <p className="warning">{this.state.warning}</p>
+        <h1>{TITLE}</h1>
         <form className="string-checker-form" onSubmit={this.handleSubmit}>
           <input
             className="string-checker-input"
-            type="text"
+            autoFocus
+            type="search"
             placeholder={INPUT_AREA_PLACEHOLDER}
-            value={this.state.value}
+            value={value}
             onChange={this.handleChange}
           />
-          <input
-            disabled={!isAlphaNumeric(this.state.value)}
+          <button
+            disabled={!isAlphaNumeric(value)}
             className="string-checker-button"
             type="submit"
-            value="Check"
-          />
+          >
+            Check
+          </button>
         </form>
-        {/* <ClearInputIcon onClick={this.clearInput} /> */}
+        <p>
+          {Math.min(value.length, MAXIMUM_CHARACTER)}/{MAXIMUM_CHARACTER}
+        </p>
+        {value && !isAlphaNumeric(value) && !dismissWarning && (
+          <p className="warning">
+            {NON_ALPHANUMERIC_FORMAT_MESSAGE} {"   "}
+            <a
+              onClick={() =>
+                this.setState({
+                  value: removeNonAlphanumericChar(value),
+                })
+              }
+            >
+              Yes
+            </a>
+            {"   "}
+            <a>No</a>
+          </p>
+        )}
 
-        <div>{DUPLICATES_LABEL}</div>
-        <ResultDisplay results={this.state.singleOccurence} />
-        <ResultDisplay results={this.state.occurrence} />
+        {singleOccurence ? (
+          <div>
+            <h2>{DUPLICATES_LABEL}</h2>
+            <p>{TOP_BOTTOM_LABEL}</p>
+            <h3>{FRONTEND_LABEL}</h3>
+            <ResultDisplay results={singleOccurence} />
+          </div>
+        ) : null}
+        {isLoading && !error && !occurrence.length ? (
+          <p>Loading...</p>
+        ) : (
+          <div>
+            <h3>{BACKEND_LABEL}</h3>
+            <ResultDisplay results={occurrence} />
+          </div>
+        )}
+        {error && <p>Something went wrong</p>}
       </div>
     );
   }

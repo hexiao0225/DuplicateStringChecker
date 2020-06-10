@@ -1,82 +1,173 @@
 html {
   font-size: 2em;
-  font-family: "Open Sans", sans-serif;
+  font-family: "Roboto", sans-serif;
+  padding: 5vw;
 }
 
 body {
   font-family: inherit;
+  background: white;
+}
+
+h1 {
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 1em;
+}
+
+h2 {
+  font-size: 22px;
+  font-weight: 400;
+  margin-bottom: 0.5em;
+}
+
+h3 {
+  font-size: 17px;
+  font-weight: 300;
+  margin-bottom: 0.5em;
+  overflow: auto;
+}
+
+p {
+  font-size: 13px;
+  font-weight: 300;
+  margin-bottom: 0.25em;
+}
+
+a {
+  color: #0070c9;
+}
+
+a:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+  outline: none;
 }
 
 .app {
   height: 100vh;
   width: 100%;
-  background: white;
   background-size: cover;
   display: flex;
   justify-content: center;
-  align-items: center;
 }
 
 .string-checker-pad {
-  height: 40vh;
+  /* background: #fafafa; */
   width: 80vw;
-  border: 4px solid black;
-  padding: 10px;
+  padding: 20px;
+}
+
+.info-sidebar {
+  width: 20vw;
+  padding: 20px;
 }
 
 .result-display {
-  height: 20vh;
-  font-weight: 600;
   display: flex;
   font-size: 0.75em;
   justify-content: flex-start;
   align-items: flex-start;
+  flex-wrap: wrap;
+  flex-direction: row;
 }
 
 .letter-number-box {
-  height: 15vh;
-  width: 10vw;
-  display: flex;
-  flex-direction: column;
+  font-size: 17px;
   font-weight: 600;
-  border: 4px solid black;
-  justify-content: center;
-  align-items: center;
-  margin-right: 10px;
-}
-
-.letter-number-box-shrinked {
+  min-height: 60px;
   height: 15vh;
-  width: 3vw;
   display: flex;
   flex-direction: column;
-  font-weight: 400;
-  border-top: 4px solid black;
-  border-right: 1px solid black;
-  border-bottom: 4px solid black;
+  border: 1px solid rgba(51, 51, 51, 0.2);
+  border-radius: 5px;
   justify-content: center;
   align-items: center;
-  overflow-y: auto;
+  margin: 10px;
 }
 
-.string-checker-form {
-  height: 10vh;
+.letter-number-box-character {
+  font-weight: 600;
+  padding: 0px 20px 10px 20px;
+  border-bottom: 1px solid rgba(51, 51, 51, 0.2);
 }
+
+.letter-number-box-occurrence {
+  padding: 10px 20px 0px 20px;
+}
+
+/* .string-checker-form {
+} */
 
 .string-checker-input {
-  width: 50vw;
+  width: 40vw;
   height: 5vh;
-  border: 4px solid black;
-  margin-right: 10px;
+  padding: 10px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  border: 1px solid rgba(51, 51, 51, 0.2);
+  margin-right: 30px;
+  overflow: auto;
 }
+
+.string-checker-input:hover {
+  border: 1px solid #1c8bed;
+}
+
+input[type="search"] {
+  font-size: 17px;
+  font-weight: 300;
+}
+
 .string-checker-button {
-  width: 20vw;
-  height: 5vh;
-  border: 4px solid black;
+  width: 90px;
+  height: 36px;
+  background: #1c8bed;
+  color: white;
+  border: none;
+  border-radius: 5px;
   margin-right: 10px;
-  font-weight: 600;
+  justify-content: flex-end;
+  vertical-align: center;
+  font-size: 17px;
+  font-weight: 300;
 }
-.clear-input-icon {
+.string-checker-button:hover {
+  border: none;
+  background: #1ca0ed;
+  color: white;
+  cursor: pointer;
+}
+.string-checker-button:disabled {
+  background: rgba(51, 51, 51, 0.2);
+  cursor: not-allowed;
+}
+.clear-input-button {
   max-width: 20px;
   max-height: 20px;
+  position: relative;
+  top: 5px;
+  margin-left: -50px;
+  margin-right: 50px;
+  background-color: Transparent;
+  background-repeat: no-repeat;
+  border: none;
+  cursor: pointer;
+}
+
+::-webkit-input-placeholder {
+  font-size: 15px;
+  font-family: inherit;
+}
+
+.warning {
+  content: "\200b";
+  min-height: 20px;
 }
