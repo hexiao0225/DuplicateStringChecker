@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import ResultDisplay from "./ResultDisplay";
+import ResultCanvas from "./ResultCanvas";
 import {
   INPUT_AREA_PLACEHOLDER,
   DUPLICATES_LABEL,
   NON_ALPHANUMERIC_FORMAT_MESSAGE,
   MAXIMUM_CHARACTER,
-  BACKEND_LABEL,
-  FRONTEND_LABEL,
+  BACKEND_RESULT_LABEL,
+  FRONTEND_RESULT_LABEL,
   TITLE,
   TOP_BOTTOM_LABEL,
 } from "../constants/texts";
@@ -142,16 +143,16 @@ export default class StringCheckerPad extends Component {
           <div>
             <h2>{DUPLICATES_LABEL}</h2>
             <p>{TOP_BOTTOM_LABEL}</p>
-            <h3>{FRONTEND_LABEL}</h3>
+            <h3>{FRONTEND_RESULT_LABEL}</h3>
             <ResultDisplay results={singleOccurence} />
           </div>
         ) : null}
-        {isLoading && !error && !occurrence.length ? (
+        {isLoading && !occurrence.length ? (
           <p>Loading...</p>
         ) : (
           <div>
-            <h3>{BACKEND_LABEL}</h3>
-            <ResultDisplay results={occurrence} />
+            <h3>{BACKEND_RESULT_LABEL}</h3>
+            <ResultCanvas results={occurrence} />
           </div>
         )}
         {error && <p>Something went wrong</p>}

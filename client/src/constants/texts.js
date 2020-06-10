@@ -1,3 +1,5 @@
+export const MAXIMUM_CHARACTER = 1000;
+
 export const TITLE = "Duplicate String Checker";
 
 export const DESCRIPTION_LABEL = "Description";
@@ -10,9 +12,13 @@ export const DUPLICATES_LABEL = "Duplicates Checking Results";
 export const TOP_BOTTOM_LABEL =
   "Top: character(s) | Bottom: number of occurrence";
 
+export const FRONTEND_RESULT_LABEL = "Results from Frontend";
+
 export const FRONTEND_LABEL = "Frontend";
 
-export const FRONTEND_TECHNOLOGY = "ReactJS";
+export const FRONTEND_TECHNOLOGY = "ReactJS, Canvas";
+
+export const BACKEND_RESULT_LABEL = "Results from Backend";
 
 export const BACKEND_LABEL = "Backend";
 
@@ -20,10 +26,10 @@ export const BACKEND_TECHNOLOGY = "Express";
 
 export const CHECK_BUTTON_LABEL = "Check";
 
+export const NO_DUPLICATES_FOUND = "No duplicates found";
+
 export const INPUT_AREA_PLACEHOLDER =
   "Type or paste a string here ...(alphanumeric characters only)";
-
-export const MAXIMUM_CHARACTER = 400;
 
 export const NON_ALPHANUMERIC_FORMAT_MESSAGE =
   "We detected non-alphanumeric characters in your string. Would you like us to auto format the string?";

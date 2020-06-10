@@ -68,6 +68,17 @@ button:focus {
   padding: 20px;
 }
 
+@media only screen and (max-width: 600px) {
+  .info-sidebar {
+    display: none;
+  }
+
+  .string-checker-pad {
+    width: 90vw;
+    padding: 10px;
+  }
+}
+
 .result-display {
   display: flex;
   font-size: 0.75em;
