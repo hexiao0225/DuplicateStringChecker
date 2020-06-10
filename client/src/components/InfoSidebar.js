@@ -19,8 +19,8 @@ const InfoSidebar = () => (
     <h2>{BACKEND_LABEL}</h2>
     <h3>{BACKEND_TECHNOLOGY}</h3>
     <h2>{TEST_STRINGS_LABEL}</h2>
-    {TEST_CASES.map((string) => (
-      <h3>{string}</h3>
+    {TEST_CASES.map((string, index) => (
+      <h3 key={index}>{string}</h3>
     ))}
   </div>
 );

@@ -7,7 +7,8 @@ export const PROJECT_DESCRIPTION =
 
 export const DUPLICATES_LABEL = "Duplicates Checking Results";
 
-export const TOP_BOTTOM_LABEL = "Top: character. Bottom: number of occurrence";
+export const TOP_BOTTOM_LABEL =
+  "Top: character(s) | Bottom: number of occurrence";
 
 export const FRONTEND_LABEL = "Frontend";
 
@@ -20,16 +21,18 @@ export const BACKEND_TECHNOLOGY = "Express";
 export const CHECK_BUTTON_LABEL = "Check";
 
 export const INPUT_AREA_PLACEHOLDER =
-  "Type or paste a string here (alphanumeric characters only)";
+  "Type or paste a string here ...(alphanumeric characters only)";
 
-export const MAXIMUM_CHARACTER = 150;
+export const MAXIMUM_CHARACTER = 400;
 
 export const NON_ALPHANUMERIC_FORMAT_MESSAGE =
   "We detected non-alphanumeric characters in your string. Would you like us to auto format the string?";
 
+export const ALPHANUMERIC_ONLY = "Alphanumeric characters (Aa-Zz 1-9)";
 export const TEST_STRINGS_LABEL = "Test Strings";
 
 export const TEST_CASES = [
+  "abc",
   "abbab",
   "bbbaabbbaa",
   "123alsdfhl asdflh!@#sdf",

@@ -8,7 +8,6 @@ import {
   BACKEND_LABEL,
   FRONTEND_LABEL,
   TITLE,
-  PROJECT_DESCRIPTION,
   TOP_BOTTOM_LABEL,
 } from "../constants/texts";
 
@@ -48,14 +47,14 @@ export default class StringCheckerPad extends Component {
       warning: "",
       singleOccurence: {},
       occurrence: {},
-      dismissWarning: false,
+      isWarningDismissed: false,
       isLoading: false,
       error: false,
     };
   }
 
   handleChange = (e) => {
-    this.setState({ value: e.target.value });
+    this.setState({ value: e.target.value, isWarningDismissed: false });
   };
 
   handleSubmit = (e) => {
@@ -89,7 +88,7 @@ export default class StringCheckerPad extends Component {
       occurrence,
       isLoading,
       error,
-      dismissWarning,
+      isWarningDismissed,
     } = this.state;
     return (
       <div className="string-checker-pad">
@@ -111,10 +110,8 @@ export default class StringCheckerPad extends Component {
             Check
           </button>
         </form>
-        <p>
-          {Math.min(value.length, MAXIMUM_CHARACTER)}/{MAXIMUM_CHARACTER}
-        </p>
-        {value && !isAlphaNumeric(value) && !dismissWarning && (
+
+        {value && !isAlphaNumeric(value) && !isWarningDismissed ? (
           <p className="warning">
             {NON_ALPHANUMERIC_FORMAT_MESSAGE} {"   "}
             <a
@@ -127,7 +124,17 @@ export default class StringCheckerPad extends Component {
               Yes
             </a>
             {"   "}
-            <a>No</a>
+            <a
+              onClick={() => {
+                this.setState({ isWarningDismissed: true });
+              }}
+            >
+              No
+            </a>
+          </p>
+        ) : (
+          <p>
+            {Math.min(value.length, MAXIMUM_CHARACTER)}/{MAXIMUM_CHARACTER}
           </p>
         )}
 
